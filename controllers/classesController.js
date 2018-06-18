@@ -1,7 +1,13 @@
 var classes = require('../models/classes');
+var mock = require('../models/mock-user');
 
 exports.classes_list = function(req, res){
-    res.send('NOT IMPLEMENTED: List of classes');
+    classes.find({}, 'subject day start')
+    .populate('subject')
+    .exec(function(err, docs){
+        if(err) return next(err);
+        res.render('listing', {title: 'Students', user: mock.user, group: 'students', collection: docs});
+    });
 };
 
 exports.classes_details = function(req, res){

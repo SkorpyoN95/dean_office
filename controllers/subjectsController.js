@@ -1,7 +1,12 @@
 var subject = require('../models/subject');
+var mock = require('../models/mock-user');
 
 exports.subject_list = function(req, res){
-    res.send('NOT IMPLEMENTED: Subjects list');
+    subject.find({}, 'title')
+    .exec(function(err, docs){
+        if(err) return next(err);
+        res.render('listing', {title: 'Syllabus', user: mock.user, group: 'subjects', collection: docs});
+    });;
 };
 
 exports.subject_details = function(req, res){

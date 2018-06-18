@@ -13,6 +13,12 @@ var ClassesSchema = new Schema(
 );
 
 ClassesSchema
+.virtual('name')
+.get(function(){
+    return this.subject.title + ' ' + this.day + ' ' + this.start;
+})
+
+ClassesSchema
 .virtual('url')
 .get(function(){
     return '/main/classes/' + this._id;

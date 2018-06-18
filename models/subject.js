@@ -11,6 +11,12 @@ var SubjectSchema = new Schema(
 );
 
 SubjectSchema
+.virtual('name')
+.get(function(){
+    return this.title;
+})
+
+SubjectSchema
 .virtual('url')
 .get(function(){
     return '/main/subjects/' + this._id;

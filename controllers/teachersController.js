@@ -1,7 +1,7 @@
 var teacher = require('../models/teacher');
 var mock = require('../models/mock-user');
 
-exports.teacher_list = function(req, res){
+exports.teacher_list = function(req, res, next){
     teacher.find({}, 'first_name last_name')
     .exec(function(err, docs){
         if(err) return next(err);

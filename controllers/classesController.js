@@ -1,7 +1,7 @@
 var classes = require('../models/classes');
 var mock = require('../models/mock-user');
 
-exports.classes_list = function(req, res){
+exports.classes_list = function(req, res, next){
     classes.find({}, 'subject day start')
     .populate('subject')
     .exec(function(err, docs){

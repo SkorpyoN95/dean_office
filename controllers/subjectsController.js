@@ -1,7 +1,7 @@
 var subject = require('../models/subject');
 var mock = require('../models/mock-user');
 
-exports.subject_list = function(req, res){
+exports.subject_list = function(req, res, next){
     subject.find({}, 'title')
     .exec(function(err, docs){
         if(err) return next(err);

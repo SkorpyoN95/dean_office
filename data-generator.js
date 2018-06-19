@@ -10,8 +10,10 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 var student = require('./models/student');
 var teacher = require('./models/teacher');
 var subject = require('./models/subject');
+var classes = require('./models/classes');
+var async = require('async');
 
-for(i = 0; i < 100; i++){
+/*for(i = 0; i < 100; i++){
     var first = faker.name.firstName(),
         last = faker.name.lastName();
     new student({first_name: first,
@@ -38,8 +40,24 @@ for(i = 0; i < 20; i++){
                 total_hours: faker.random.arrayElement([45,60,75]),
                 ects: faker.random.number({min: 1, max: 6})})
         .save(console.error);
-}
+}*/
 
-/*student.find({first_name: "Katarzyna"}, 'first_name last_name', function(err, results){
-    console.log(results);
-})*/
+for(i = 0; i < 50; i++){
+    async.parallel({
+        subject: function(cb){
+            subject.aggregate([{$project: {_id: 1}}]).sample(1)
+            .exec(cb);
+        },
+        teacher: function(cb){
+            teacher.aggregate([{$project: {_id: 1}}]).sample(1)
+            .exec(cb);
+        }
+    }, function(err, results){
+        if(err) console.error(err);
+        new classes({subject: results.subject[0]._id, teachers: [results.teacher[0]._id],
+                    day: faker.random.arrayElement(["mon", "tue", "wed", "thu", "fri"]),
+                    start: faker.random.arrayElement(["8:00", "9:30", "11:00", "12:30", "14:00", "15:30"]),
+                    length: faker.random.arrayElement([45, 90, 135]) })
+        .save(console.log);
+    });
+}

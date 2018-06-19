@@ -26,7 +26,6 @@ router.get('/teachers/:id', teachersController.teacher_details);
 //Subject routes
 router.get('/subjects', subjectsController.subject_list);
 router.get('/subjects/:id', subjectsController.subject_details);
-router.get('/subjects/:id/teachers', subjectsController.subject_teachers);
 
 //Class routes
 router.get('/classes', classesController.classes_list);

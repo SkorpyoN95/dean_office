@@ -9,8 +9,14 @@ exports.student_list = function(req, res, next){
     });
 };
 
-exports.student_details = function(req, res){
-    res.send('NOT IMPLEMENTED: Student info');
+exports.student_details = function(req, res, next){
+    student.findById(req.params.id)
+    .populate('classes')
+    .exec(function(err, docs){
+        if(err) return next(err);
+        res.render('profile', {title: 'Student profile', user: mock.user, person: docs,
+                                additional_data: docs.classes, additional_data_title: "Enrolled classes:"});
+    });
 };
 
 exports.my_schedule = function(req, res){

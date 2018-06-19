@@ -1,0 +1,25 @@
+extends main
+
+block content
+    h4 Personal data
+    table
+        tr
+            td First name:
+            td= person.first_name
+        tr
+            td Last name:
+            td= person.last_name
+        tr
+            td Email:
+            td= person.email
+        tr
+            td Born:
+            td= person.birth_date
+        tr
+            td Age:
+            td= person.age
+    h4= additional_data_title
+    ul(class="list-group")
+        each val in additional_data
+            li(class="list-group-item")
+                a(href=val.url) val.name

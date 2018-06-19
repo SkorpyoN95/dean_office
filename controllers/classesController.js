@@ -6,7 +6,7 @@ exports.classes_list = function(req, res, next){
     .populate('subject')
     .exec(function(err, docs){
         if(err) return next(err);
-        res.render('listing', {title: 'Students', user: mock.user, group: 'students', collection: docs});
+        res.render('listing', {title: 'Classes', user: mock.user, group: 'students', collection: docs});
     });
 };
 

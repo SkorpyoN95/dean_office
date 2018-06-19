@@ -1,0 +1,23 @@
+extends main
+
+block content
+    h4 About subject
+    table
+        tr
+            td Title:
+            td= subject.title
+        tr
+            td Total number of hours:
+            td= subject.total_hours
+        tr
+            td ECTS points:
+            td= subject.ects
+    h4 Availaible terms:
+    table(class="list-group")
+        each val in terms
+            tr(class="list-group-item")
+                td 
+                    a(href=val.url)= val.name
+                td
+                    each t in val.teachers
+                        a(href=t.url)= t.name

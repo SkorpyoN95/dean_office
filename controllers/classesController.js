@@ -11,7 +11,13 @@ exports.classes_list = function(req, res, next){
 };
 
 exports.classes_details = function(req, res){
-    res.send('NOT IMPLEMENTED: Details of class');
+    classes.findById(req.param.id)
+    .populate('subject')
+    .populate('teacher')
+    .exec(function(err, docs){
+        if(err) return next(err);
+        res.render('class', {title: 'Class\' details', user: mock.user, _class: docs});
+    });
 };
 
 exports.class_assigned_students = function(req, res){

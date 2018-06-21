@@ -13,9 +13,15 @@ var ClassesSchema = new Schema(
 );
 
 ClassesSchema
+.virtual('time')
+.get(function(){
+    return this.day + ' ' + this.start;
+})
+
+ClassesSchema
 .virtual('name')
 .get(function(){
-    return this.subject.title + ' ' + this.day + ' ' + this.start;
+    return this.subject.title + ' ' + this.time;
 })
 
 ClassesSchema

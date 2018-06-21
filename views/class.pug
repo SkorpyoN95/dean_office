@@ -1,0 +1,16 @@
+extends main
+
+block content
+    h4 About class
+    table
+        tr
+            td Subject:
+            td= _class.subject.title
+        tr
+            td Teacher:
+            td= _class.teachers.map(teacher => {return teacher.name})
+        tr
+            td Time:
+            td= _class.Time
+    a(href=_class.url + '/students') Students
+        | enrolled on #{_class.name}

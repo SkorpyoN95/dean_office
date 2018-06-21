@@ -7,6 +7,11 @@ function dateFormat(date){
     return date.toLocaleDateString("en-US", {day: "numeric", month: "long", year: "numeric"});
 }
 
+var StudentClassesSchema = new Schema({
+    class: {type: Schema.ObjectId, ref: 'Classes'},
+    grades: [{type: Number, enum: [2.0, 3.0, 3.5, 4.0, 4.5, 5.0]}]
+});
+
 var StudentSchema = new Schema(
     {
         first_name: {type: String, required: true, max: 100},
@@ -14,10 +19,7 @@ var StudentSchema = new Schema(
         email: {type: String, required: true, max: 100},
         password: {type: String, required: true, max: 30, min: 6},
         birth_date: {type: Date, get: dateFormat},
-        classes: [{
-            class: {type: Schema.ObjectId, ref: 'Classes'},
-            grades: [{type: Number, enum: [2.0, 3.0, 3.5, 4.0, 4.5, 5.0]}]
-        }]
+        classes: [StudentClassesSchema]
     }
 );
 

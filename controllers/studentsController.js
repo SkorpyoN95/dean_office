@@ -12,10 +12,11 @@ exports.student_list = function(req, res, next){
 exports.student_details = function(req, res, next){
     student.findById(req.params.id)
     .populate('classes')
+    .populate('classes.class')
     .exec(function(err, docs){
         if(err) return next(err);
         res.render('profile', {title: 'Student profile', user: mock.user, person: docs,
-                                additional_data: docs.classes, additional_data_title: "Enrolled classes:"});
+                                additional_data: docs.classes.map(cl => {return cl.class}), additional_data_title: "Enrolled classes:"});
     });
 };
 

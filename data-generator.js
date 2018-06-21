@@ -13,18 +13,25 @@ var subject = require('./models/subject');
 var classes = require('./models/classes');
 var async = require('async');
 
-/*for(i = 0; i < 100; i++){
-    var first = faker.name.firstName(),
-        last = faker.name.lastName();
-    new student({first_name: first,
-                last_name: last,
-                email: faker.internet.email(first, last),
-                password: faker.internet.password(10, 1),
-                birth_date: faker.date.between('1993-01-01', '1998-12-31')})
-        .save(console.error);
+for(i = 0; i < 100; i++){
+    classes.aggregate([{$project: {_id: 1}}]).sample(7)
+    .exec(function(err, docs){
+        var cl = [];
+        var first = faker.name.firstName(),
+            last = faker.name.lastName();
+        new student({first_name: first,
+                    last_name: last,
+                    email: faker.internet.email(first, last),
+                    password: faker.internet.password(10, 1),
+                    birth_date: faker.date.between('1993-01-01', '1998-12-31'),
+                    classes: docs.map(cl => {return {class: cl._id, grades: []} })})
+            .save(console.log);
+        //console.log(docs);
+    });
+    
 }
 
-for(i = 0; i < 30; i++){
+/*for(i = 0; i < 30; i++){
     var first = faker.name.firstName(),
         last = faker.name.lastName();
     new teacher({first_name: first,
@@ -42,7 +49,7 @@ for(i = 0; i < 20; i++){
         .save(console.error);
 }*/
 
-for(i = 0; i < 50; i++){
+/*for(i = 0; i < 50; i++){
     async.parallel({
         subject: function(cb){
             subject.aggregate([{$project: {_id: 1}}]).sample(1)
@@ -60,4 +67,4 @@ for(i = 0; i < 50; i++){
                     length: faker.random.arrayElement([45, 90, 135]) })
         .save(console.log);
     });
-}
+}*/

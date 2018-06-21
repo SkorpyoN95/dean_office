@@ -1,5 +1,6 @@
 var classes = require('../models/classes');
 var mock = require('../models/mock-user');
+var student = require('../models/student');
 
 exports.classes_list = function(req, res, next){
     classes.find({}, 'subject day start')
@@ -11,9 +12,9 @@ exports.classes_list = function(req, res, next){
 };
 
 exports.classes_details = function(req, res){
-    classes.findById(req.param.id)
+    classes.findById(req.params.id)
     .populate('subject')
-    .populate('teacher')
+    .populate('teachers')
     .exec(function(err, docs){
         if(err) return next(err);
         res.render('class', {title: 'Class\' details', user: mock.user, _class: docs});
@@ -21,15 +22,11 @@ exports.classes_details = function(req, res){
 };
 
 exports.class_assigned_students = function(req, res){
-    res.send('NOT IMPLEMENTED: Students list assigned to class');
-};
-
-exports.assign_new_student_to_class = function(req, res){
-    res.send('NOT IMPLEMENTED: Assign student to class');
-};
-
-exports.kick_student_from_class = function(req, res){
-    res.send('NOT IMPLEMENTED: Kick student from class');
+    student.find({'classes.class': req.params.id}, 'first_name last_name')
+    .exec(function(err, docs){
+        if(err) return next(err);
+        res.render('listing', {title: 'Enrolled students', user: mock.user, group: 'students enrolled on the class', collection: docs});
+    });
 };
 
 exports.add_grade_to_student = function(req, res){

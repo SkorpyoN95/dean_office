@@ -17,7 +17,6 @@ router.get('/', function(req,res){
 router.get('/students', studentsController.student_list);
 router.get('/students/:id', studentsController.student_details);
 router.get('/grades', studentsController.my_grades);
-router.get('/schedule', studentsController.my_schedule);
 
 //Teacher routes
 router.get('/teachers', teachersController.teacher_list);

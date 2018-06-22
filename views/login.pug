@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    h2 Log in Dean's E-office
+    form(action="", method="post")
+        input(type="email", name="email")
+        label(for="email") Email:
+        input(type="password", name="password")
+        label(for="password") Password:
+        input(type="submit", value="Log in")

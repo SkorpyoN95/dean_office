@@ -20,10 +20,13 @@ exports.student_details = function(req, res, next){
     });
 };
 
-exports.my_schedule = function(req, res){
-    res.send('NOT IMPLEMENTED: User schedule');
-};
-
-exports.my_grades = function(req, res){
-    res.send('NOT IMPLEMENTED: User grades');
+exports.my_grades = function(req, res, next){
+    student.findOne({'classes.class': mock.user._id})
+    .populate('classes')
+    .populate('classes.class')
+    //.populate('classes.class.subject')
+    .exec(function(err, docs){
+        if(err) return next(err);
+        res.render('grades', {title: 'Your grades', user: mock.user, student: docs});
+    });
 };

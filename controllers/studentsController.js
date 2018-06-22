@@ -21,7 +21,7 @@ exports.student_details = function(req, res, next){
 };
 
 exports.my_grades = function(req, res, next){
-    student.findOne({'classes.class': req.user._id})
+    student.findById(req.user._id)
     .populate('classes')
     .populate('classes.class')
     //.populate('classes.class.subject')

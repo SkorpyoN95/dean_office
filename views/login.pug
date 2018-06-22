@@ -3,8 +3,10 @@ extends layout
 block body_content
     h2 Log in Dean's E-office
     form(action="", method="post")
-        input(type="email", name="email")
         label(for="email") Email:
-        input(type="password", name="password")
+        input(type="email", name="email")
+        br
         label(for="password") Password:
+        input(type="password", name="password")
+        br
         input(type="submit", value="Log in")

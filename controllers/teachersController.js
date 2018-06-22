@@ -18,7 +18,7 @@ exports.teacher_details = function(req, res, next){
             .exec(callback);
         },
         data: function(callback){
-            classes.find({techers: req.params.id})
+            classes.find({teachers: req.params.id})
             .exec(callback);
         }
     }, function(err, results){

@@ -20,6 +20,11 @@ router.get('/', isAuthenticated, function(req,res){
     res.render("main", {title: "Home page", user: req.user});
 })
 
+router.get('/logout', isAuthenticated, function(req,res){
+    req.logout();
+    res.redirect('/login')
+})
+
 //Student routes
 router.get('/students', isAuthenticated, studentsController.student_list);
 router.get('/students/:id', isAuthenticated, studentsController.student_details);

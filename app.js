@@ -8,6 +8,32 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var mainRouter = require('./routes/main');
 
+var passport = require('passport-local');
+var Strategy = require('passport-local').Strategy;
+var student = require('./models/student');
+
+passport.use(new Strategy(
+  function(email, password, done) {
+    student.findOne({ email: email }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      if (user.password != password) { return done(null, false); }
+      return done(null, user);
+    });
+  }
+));
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user.id);
+});
+
+passport.deserializeUser(function(id, cb) {
+  student.findById(id, function (err, user) {
+    if (err) { return cb(err); }
+    cb(null, user);
+  });
+});
+
 var app = express();
 
 //Set up mongoose connection
@@ -31,6 +57,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/main', mainRouter);
+
+app.get('/login', function(req, res){
+    res.render('login');
+});
+
+app.post('/login', 
+    passport.authenticate('local', { failureRedirect: '/login' }),
+    function(req, res) {
+      res.redirect('/');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

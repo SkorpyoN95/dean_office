@@ -25,7 +25,8 @@ exports.class_assigned_students = function(req, res){
     student.find({'classes.class': req.params.id}, 'first_name last_name')
     .exec(function(err, docs){
         if(err) return next(err);
-        res.render('listing', {title: 'Enrolled students', user: mock.user, group: 'students enrolled on the class', collection: docs});
+        res.render('listing', { title: 'Enrolled students', user: mock.user, group: 'students enrolled on the class',
+                                collection: docs, url: "/main/classes/"+req.params.id});
     });
 };
 
@@ -35,7 +36,6 @@ exports.student_grades = function(req,res, next){
     .populate('classes.class')
     //.populate('classes.class.subject')
     .exec(function(err, docs){
-        console.log(docs);
         if(err) return next(err);
         res.render('grades_teacher', {title: 'Student\'s grades', user: mock.user, student: docs});
     });
@@ -44,7 +44,7 @@ exports.student_grades = function(req,res, next){
 exports.grades_crud = function(req, res, next){
     student.findOne({'classes.class': req.params.id_c, '_id': req.params.id_s})
     .populate('classes')
-    .populate('classes.class', 'subject')
+    .populate('classes.class')
     //.populate('classes.class.subject')
     .exec(function(err, stud){
         switch(req.body._method){

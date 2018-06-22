@@ -5,4 +5,4 @@ block content
     ul(class='list-group') 
         each val in collection
             li(class='list-group-item')
-                a(href=val.url) #{val.name}
+                a(href=url ? url + val.url.substring(5) : val.url) #{val.name}

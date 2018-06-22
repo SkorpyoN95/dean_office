@@ -8,11 +8,14 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var mainRouter = require('./routes/main');
 
-var passport = require('passport-local');
+var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var student = require('./models/student');
+var expr_sess = require('express-session');
 
-passport.use(new Strategy(
+passport.use('login', new Strategy({
+  usernameField: 'email'
+},
   function(email, password, done) {
     student.findOne({ email: email }, function (err, user) {
       if (err) { return done(err); }
@@ -54,6 +57,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(expr_sess({secret: 'e-dean-key'}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/main', mainRouter);
@@ -63,9 +70,9 @@ app.get('/login', function(req, res){
 });
 
 app.post('/login', 
-    passport.authenticate('local', { failureRedirect: '/login' }),
+    passport.authenticate('login', { failureRedirect: '/login' }),
     function(req, res) {
-      res.redirect('/');
+      res.redirect('/main');
 });
 
 // catch 404 and forward to error handler

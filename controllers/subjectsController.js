@@ -7,7 +7,7 @@ exports.subject_list = function(req, res, next){
     subject.find({}, 'title')
     .exec(function(err, docs){
         if(err) return next(err);
-        res.render('listing', {title: 'Syllabus', user: mock.user, group: 'subjects', collection: docs});
+        res.render('listing', {title: 'Syllabus', user: req.user, group: 'subjects', collection: docs});
     });
 };
 
@@ -30,7 +30,7 @@ exports.subject_details = function(req, res){
             err.status = 404;
             return next(err);
         }
-        res.render('subject', {title: 'Subject info', user: mock.user, subject: results.subject,
+        res.render('subject', {title: 'Subject info', user: req.user, subject: results.subject,
                                         terms: results.terms});
     });
 };

@@ -7,7 +7,7 @@ exports.classes_list = function(req, res, next){
     .populate('subject')
     .exec(function(err, docs){
         if(err) return next(err);
-        res.render('listing', {title: 'Classes', user: mock.user, group: 'students', collection: docs});
+        res.render('listing', {title: 'Classes', user: req.user, group: 'students', collection: docs});
     });
 };
 
@@ -17,7 +17,7 @@ exports.classes_details = function(req, res){
     .populate('teachers')
     .exec(function(err, docs){
         if(err) return next(err);
-        res.render('class', {title: 'Class\' details', user: mock.user, _class: docs});
+        res.render('class', {title: 'Class\' details', user: req.user, _class: docs});
     });
 };
 
@@ -25,7 +25,7 @@ exports.class_assigned_students = function(req, res){
     student.find({'classes.class': req.params.id}, 'first_name last_name')
     .exec(function(err, docs){
         if(err) return next(err);
-        res.render('listing', { title: 'Enrolled students', user: mock.user, group: 'students enrolled on the class',
+        res.render('listing', { title: 'Enrolled students', user: req.user, group: 'students enrolled on the class',
                                 collection: docs, url: "/main/classes/"+req.params.id});
     });
 };
@@ -37,7 +37,7 @@ exports.student_grades = function(req,res, next){
     //.populate('classes.class.subject')
     .exec(function(err, docs){
         if(err) return next(err);
-        res.render('grades_teacher', {title: 'Student\'s grades', user: mock.user, student: docs});
+        res.render('grades_teacher', {title: 'Student\'s grades', user: req.user, student: docs});
     });
 }
 
@@ -67,6 +67,6 @@ exports.grades_crud = function(req, res, next){
 
         }
         
-        res.render('grades_teacher', {title: 'Student\'s grades', user: mock.user, student: stud});
+        res.render('grades_teacher', {title: 'Student\'s grades', user: req.user, student: stud});
     });
 };

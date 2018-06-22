@@ -31,6 +31,7 @@ router.get('/subjects/:id', subjectsController.subject_details);
 router.get('/classes', classesController.classes_list);
 router.get('/classes/:id', classesController.classes_details);
 router.get('/classes/:id/students', classesController.class_assigned_students);
-router.put('/classes/:id_c/students/:id_s', classesController.add_grade_to_student);
+router.get('/classes/:id_c/students/:id_s', classesController.student_grades);
+router.post('/classes/:id_c/students/:id_s', classesController.grades_crud);
 
 module.exports = router;

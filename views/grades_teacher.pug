@@ -1,0 +1,46 @@
+extends grades
+
+block teacher_stuff
+    br
+    div
+        p Add a grade
+        form(action="", method="post")
+            input(type="hidden", name="_method", value="put")
+            select(name="add_class")
+                each cl,i in student.classes
+                    option(value= i.toString())= cl.class.name
+            select(name="add_grade")
+                option(value="2.0") 2.0
+                option(value="3.0") 3.0
+                option(value="3.5") 3.5
+                option(value="4.0") 4.0
+                option(value="4.5") 4.5
+                option(value="5.0") 5.0
+            input(type="submit", value="Add")
+    br
+    div
+        p Update the grade
+        form(action="", method="post")
+            input(type="hidden", name="_method", value="post")
+            select(name="update_old")
+                each cl,i in student.classes
+                    each gr,j in cl.grades
+                        option(value=JSON.stringify({class_id: i, grade_id: j}))= cl.class.name + ' ' + gr
+            select(name="update_new")
+                option(value="2.0") 2.0
+                option(value="3.0") 3.0
+                option(value="3.5") 3.5
+                option(value="4.0") 4.0
+                option(value="4.5") 4.5
+                option(value="5.0") 5.0
+            input(type="submit", value="Update")
+    br
+    div
+        p Delete the grade
+        form(action="", method="post")
+            input(type="hidden", name="_method", value="delete")
+            select(name="remove")
+                each cl,i in student.classes
+                    each gr,j in cl.grades
+                        option(value=JSON.stringify({class_id: i, grade_id: j}))= cl.class.name + ' ' + gr
+            input(type="submit", value="Delete")

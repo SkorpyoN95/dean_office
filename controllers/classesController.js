@@ -29,6 +29,44 @@ exports.class_assigned_students = function(req, res){
     });
 };
 
-exports.add_grade_to_student = function(req, res){
-    res.send('NOT IMPLEMENTED: Add grade to the student');
+exports.student_grades = function(req,res, next){
+    student.findOne({'classes.class': req.params.id_c, '_id': req.params.id_s})
+    .populate('classes')
+    .populate('classes.class')
+    //.populate('classes.class.subject')
+    .exec(function(err, docs){
+        console.log(docs);
+        if(err) return next(err);
+        res.render('grades_teacher', {title: 'Student\'s grades', user: mock.user, student: docs});
+    });
+}
+
+exports.grades_crud = function(req, res, next){
+    student.findOne({'classes.class': req.params.id_c, '_id': req.params.id_s})
+    .populate('classes')
+    .populate('classes.class', 'subject')
+    //.populate('classes.class.subject')
+    .exec(function(err, stud){
+        switch(req.body._method){
+            case 'put': var class_id = req.body.add_class; 
+                        stud.classes[class_id].grades.push(req.body.add_grade);
+                        stud.save();
+                        break;
+            case 'post':var coords = JSON.parse(req.body.update_old); 
+                        stud.classes[coords.class_id].grades[coords.grade_id] = req.body.update_new;
+                        stud.markModified('classes');
+                        stud.save();
+                        break;
+            case 'delete':  var coords = JSON.parse(req.body.remove);
+                            stud.classes[coords.class_id].grades.splice(coords.grade_id, 1);
+                            stud.save();
+                            break;
+            default: var err = new Error('Invalid method');
+                    err.status = 404;
+                    return next(err);
+
+        }
+        
+        res.render('grades_teacher', {title: 'Student\'s grades', user: mock.user, student: stud});
+    });
 };

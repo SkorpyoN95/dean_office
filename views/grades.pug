@@ -1,0 +1,12 @@
+extends main
+
+block content
+    h4= title
+    table
+        each cl in student.classes
+            tr
+                td= cl.class.name
+                each gr in cl.grades
+                    td= gr
+
+    block teacher_stuff
